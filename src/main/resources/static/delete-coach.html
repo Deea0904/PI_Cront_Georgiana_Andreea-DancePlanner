@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Coach</title>
+    <style>
+        body { background: #eef2f3; margin: 0; font-family: Arial, sans-serif; }
+        header { background: #0077cc; padding: 15px 25px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 22px; }
+        a.header-link { color: white; text-decoration: none; font-weight: bold; }
+        .container { padding: 40px; max-width: 800px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #ddd; }
+        button { padding: 6px 10px; background: #ff5050; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #ff3333; }
+        #msg { margin-top: 15px; min-height: 1.2em; font-weight: bold; }
+
+        /* Stil pentru fundalul modalului */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.6);
+        }
+        /* Cutia dialogului */
+        .modal-content {
+            background-color: white;
+            margin: 15% auto;
+            padding: 25px;
+            border-radius: 8px;
+            width: 450px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        .modal-content h3 { color: #d9534f; margin-top: 0; }
+        .option-btn { width: 100%; margin: 8px 0; padding: 12px; border-radius: 5px; cursor: pointer; border: none; font-weight: bold; }
+        .btn-primary { background: #0077cc; color: white; }
+        .btn-warning { background: #f0ad4e; color: white; }
+        .btn-cancel { background: #bbb; color: white; }
+        select { width: 100%; padding: 10px; margin: 10px 0; border-radius: 4px; border: 1px solid #ccc; font-size: 16px; }
+        hr { border: 0; border-top: 1px solid #eee; margin: 20px 0; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Delete Coach</h1>
+    <div>
+        <a class="header-link" href="/admin.html">Admin</a> |
+        <a class="header-link" href="/index.html">Home</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Șterge coach</h2>
+    <p>Alege un coach din listă și apasă „Delete”.</p>
+
+    <button onclick="loadCoaches()" style="background: #0077cc; margin-bottom: 10px;">Reîncarcă lista</button>
+
+    <div id="msg"></div>
+
+    <table id="coach-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Acțiune</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<div id="coachDeleteModal" class="modal">
+    <div class="modal-content">
+        <h3>Ștergere Antrenor</h3>
+        <p>Acest antrenor are cursuri în <b>orarul săptămânal (timetable)</b>. Ce doriți să faceți?</p>
+
+        <button class="option-btn btn-warning" onclick="executeCoachDelete(null)">
+            Lasă cursurile fără antrenor (NULL)
+        </button>
+
+        <hr>
+        <p>Sau asignează cursurile sale altui antrenor:</p>
+        <select id="replacementSelect"></select>
+        <button class="option-btn btn-primary" onclick="confirmReplacementDelete()">
+            Transferă orarul și șterge
+        </button>
+
+        <button class="option-btn btn-cancel" onclick="closeModal()">Anulează</button>
+    </div>
+</div>
+
+<script>
+    let coachToIdDelete = null;
+    let allCoachesData = [];
+
+    // 1. Încarcă antrenorii
+    async function loadCoaches() {
+        const msgEl = document.getElementById('msg');
+        const tbody = document.querySelector('#coach-table tbody');
+        msgEl.textContent = 'Se încarcă...';
+        tbody.innerHTML = '';
+
+        try {
+            const resp = await fetch('/api/coaches');
+            if (!resp.ok) throw new Error("Status: " + resp.status);
+
+            const data = await resp.json();
+            allCoachesData = data;
+            msgEl.textContent = '';
+
+            if (data.length === 0) {
+                msgEl.textContent = 'Nu există coach în baza de date.';
+                return;
+            }
+
+            data.forEach(c => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${c.id}</td>
+                    <td>${c.name}</td>
+                    <td><button onclick="openDeleteModal(${c.id})">Delete</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        } catch (err) {
+            console.error(err);
+            msgEl.textContent = 'Eroare la încărcare date.';
+        }
+    }
+
+    // 2. Deschide Modalul și populează dropdown-ul
+    function openDeleteModal(id) {
+        coachToIdDelete = id;
+        const select = document.getElementById('replacementSelect');
+        select.innerHTML = '';
+
+        // Filtrăm antrenorul curent (nu se poate auto-înlocui)
+        const others = allCoachesData.filter(c => c.id !== id);
+
+        if (others.length === 0) {
+            const opt = document.createElement('option');
+            opt.textContent = "Niciun alt antrenor disponibil";
+            opt.disabled = true;
+            select.appendChild(opt);
+        } else {
+            others.forEach(c => {
+                const opt = document.createElement('option');
+                opt.value = c.id;
+                opt.textContent = c.name;
+                select.appendChild(opt);
+            });
+        }
+
+        document.getElementById('coachDeleteModal').style.display = 'block';
+    }
+
+    // 3. Execută ștergerea prin API
+    async function executeCoachDelete(replacementId) {
+        const msgEl = document.getElementById('msg');
+        // Construim URL-ul cu parametrul replacementId dacă există
+        let url = `/api/coaches/${coachToIdDelete}`;
+        if (replacementId) {
+            url += `?replacementId=${replacementId}`;
+        }
+
+        try {
+            const resp = await fetch(url, { method: 'DELETE' });
+            if (resp.ok) {
+                msgEl.textContent = 'Antrenor eliminat și orar actualizat.';
+                closeModal();
+                loadCoaches();
+            } else {
+                const errTxt = await resp.text();
+                msgEl.textContent = 'Eroare la ștergere: ' + errTxt;
+                closeModal();
+            }
+        } catch (err) {
+            msgEl.textContent = 'Eroare de rețea.';
+            closeModal();
+        }
+    }
+
+    // 4. Helper pentru opțiunea cu înlocuitor
+    function confirmReplacementDelete() {
+        const select = document.getElementById('replacementSelect');
+        const replacementId = select.value;
+        if (!replacementId || select.options[0].disabled) {
+            alert("Nu ați selectat un înlocuitor valid.");
+            return;
+        }
+        executeCoachDelete(replacementId);
+    }
+
+    function closeModal() {
+        document.getElementById('coachDeleteModal').style.display = 'none';
+        coachToIdDelete = null;
+    }
+
+    // Închide modalul dacă se dă click în afara lui
+    window.onclick = function(event) {
+        let modal = document.getElementById('coachDeleteModal');
+        if (event.target == modal) closeModal();
+    }
+
+    // Start
+    loadCoaches();
+</script>
+</body>
+</html>

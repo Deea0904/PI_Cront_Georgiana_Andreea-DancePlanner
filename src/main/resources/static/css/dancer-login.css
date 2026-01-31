@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 30px;
+    background-color: red;
+}
+
+button {
+    padding: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+input {
+    display: block;
+    margin-bottom: 10px;
+    padding: 8px;
+    width: 250px;
+}
+
+.card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    margin-top: 15px;
+}
+
+.hidden {
+    display: none;
+}
+
+#loginMsg {
+    margin-top: 10px;
+    font-weight: bold;
+}

@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dance Planner – Coach</title>
+    <link rel="stylesheet" href="css/dancer.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Dance Planner</h1>
+        <a class="home-btn" href="index.html">Home</a>
+    </header>
+
+    <main>
+        <h2>Zona Coach</h2>
+
+        <!-- ================= AUTENTIFICARE ================= -->
+        <div class="section-box">
+            <h3>Coach Autentificare</h3>
+
+            <button id="toggleLoginBtn" class="btn btn-primary">Conectare</button>
+
+            <div id="loginBox" class="card hidden">
+                <label>Username</label>
+                <input type="text" id="username">
+
+                <label>Parola</label>
+                <input type="password" id="password">
+
+                <button id="loginBtn" class="btn btn-primary">Login</button>
+                <div id="loginMsg"></div>
+            </div>
+
+            <!-- DECONECTARE -->
+            <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
+        </div>
+
+
+        <div id="privateSections" class="hidden">
+
+            <div class="section-box">
+                <h3>
+                    Rubrica – Zona mea: <b id="coachName"></b>
+                </h3>
+
+
+                <p id="toggleChangePass" style="text-decoration: underline; cursor: pointer; color: #2563eb;">
+                    Schimbă parola contului
+                </p>
+
+
+                <div id="changePasswordBox" class="card hidden">
+                    <h3>Schimbă parola</h3>
+
+                    <p>
+                        <label>Parola veche</label>
+                        <input type="password" id="oldPass">
+                    </p>
+
+                    <p>
+                        <label>Parola nouă</label>
+                        <input type="password" id="newPass">
+                    </p>
+
+                    <p>
+                        <label>Confirmă parola nouă</label>
+                        <input type="password" id="confirmNewPass">
+                    </p>
+
+                    <p>
+                        <button class="btn btn-primary" id="changePassBtn">
+                            Schimbă
+                        </button>
+                    </p>
+
+                    <div id="changePassMsg"></div>
+                </div>
+            </div>
+
+            <div class="section-box">
+                <h3>Rubrica – Disponibilitatea mea (coach)</h3>
+                <p>Adauga ziua si ora la care esti disponibil/a.</p>
+
+                <div id="availMsg" class="status-text"></div>
+
+                <div class="card">
+                    <label>Ziua</label>
+                    <select id="availDay">
+                        <option value="1">Luni</option>
+                        <option value="2">Marti</option>
+                        <option value="3">Miercuri</option>
+                        <option value="4">Joi</option>
+                        <option value="5">Vineri</option>
+                        <option value="6">Sambata</option>
+                        <option value="7">Duminica</option>
+                    </select>
+
+                    <label>Start</label>
+                    <input id="availStart" type="time" step="60">
+
+                    <label>End</label>
+                    <input id="availEnd" type="time" step="60">
+
+                    <button class="btn btn-primary" id="addAvailBtn">Adauga interval</button>
+
+                    <table id="availTable"></table>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ================= LISTA ANTRENORI (PUBLICA) ================= -->
+        <div class="section-box">
+            <h3>Lista antrenori </h3>
+
+            <button class="btn btn-primary" id="toggleViewCoachesBtn">
+                Încarcă antrenorii
+            </button>
+
+
+            <table id="coach-table" class="hidden"></table>
+
+        </div>
+
+    </main>
+
+    <script src="js/coach.js"></script>
+</body>
+
+</html>

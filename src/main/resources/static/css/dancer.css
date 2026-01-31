@@ -1,0 +1,184 @@
+
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f7;
+    color: #222;
+}
+
+/* ============================= */
+/*            HEADER             */
+/* ============================= */
+
+header {
+    background: #1f2933;
+    color: white;
+    padding: 15px 25px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 1.3rem;
+}
+
+.home-btn {
+    background: #374151;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+/* ============================= */
+/*             MAIN              */
+/* ============================= */
+
+main {
+    max-width: 900px;
+    margin: 25px auto;
+    padding: 0 15px 30px;
+}
+
+h2 {
+    margin-top: 0;
+}
+
+/* ============================= */
+/*          SECTION BOX          */
+/* ============================= */
+
+.section-box {
+    background: white;
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    margin-top: 15px;
+}
+
+.section-box h3 {
+    margin-top: 0;
+}
+
+/* ============================= */
+/*          BUTTONS              */
+/* ============================= */
+
+button {
+    padding: 9px 14px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.95rem;
+    background: #2563eb;
+    color: white;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+table {
+    border-collapse: collapse;
+    margin-top: 10px;
+    width: 100%;
+    font-size: 0.9rem;
+}
+
+th, td {
+    border: 1px solid #d1d5db;
+    padding: 4px 6px;
+    text-align: left;
+}
+
+th { background: #f3f4f6; }
+
+/* ============================= */
+/*          LOGIN AREA           */
+/* ============================= */
+
+#toggleLoginBtn {
+    margin-top: 10px;
+}
+
+/* ascundere corecta */
+.hidden {
+    display: none !important;
+}
+
+/* card login */
+#loginBox {
+    margin-top: 12px;
+    max-width: 420px;
+}
+
+/* titlu login */
+#loginBox h3 {
+    margin-top: 0;
+}
+
+/* label + input */
+#loginBox label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 4px;
+    font-size: 0.9rem;
+    color: #374151;
+}
+
+#loginBox input[type="text"],
+#loginBox input[type="password"] {
+    width: 100%;
+    padding: 9px 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    outline: none;
+}
+
+#loginBox input:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37,99,235,0.15);
+}
+
+/* buton login */
+#loginBtn {
+    margin-top: 12px;
+    width: 100%;
+}
+
+/* mesaj login */
+#loginMsg {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+/* optional – clase din JS */
+#loginMsg.ok {
+    color: #16a34a;
+}
+
+#loginMsg.err {
+    color: #dc2626;
+}
+
+.toggle-link {
+    text-decoration: underline;
+    cursor: pointer;
+    color: #2563eb;
+}
+
+.toggle-link:hover {
+    opacity: 0.8;
+}
+
+/* ============================= */
+

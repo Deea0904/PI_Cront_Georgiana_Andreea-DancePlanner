@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Dance Planner – Dancer</title>
+    <link rel="stylesheet" href="css/dancer.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Dance Planner</h1>
+        <a class="home-btn" href="index.html">Home</a>
+    </header>
+
+    <main>
+        <h2>Zona Dancer</h2>
+
+        <div class="section-box">
+            <h3>Dancer Autentificare</h3>
+
+            <button id="toggleLoginBtn" class="btn btn-primary">Conectare</button>
+
+            <div id="loginBox" class="card hidden">
+                <label>Username</label>
+                <input type="text" id="username">
+
+                <label>Parola</label>
+                <input type="password" id="password">
+
+                <button id="loginBtn" class="btn btn-primary">Login</button>
+                <div id="loginMsg"></div>
+            </div>
+
+
+            <button id="logoutBtn" class="btn btn-secondary hidden">Logout</button>
+        </div>
+
+        <!-- SECTIUNI PRIVATE (doar dupa autentificare) -->
+        <div id="privateSections" class="hidden">
+
+            <div class="section-box">
+                <h3>Rubrica 1 – Zona mea: <b id="dancerName"></b></h3>
+
+
+                <p id="toggleChangePass" style="text-decoration: underline; cursor: pointer; color: #2563eb;">
+                    Schimbă parola contului
+                </p>
+
+                <!-- formular ascuns -->
+                <div id="changePasswordBox" class="card hidden">
+                    <h3>Schimbă parola</h3>
+
+                    <p><label>Parola veche</label>
+                        <input type="password" id="oldPass">
+                    </p>
+                    <p>
+                        <label>Parola nouă</label>
+                        <input type="password" id="newPass">
+                    </p>
+                    <p>
+                        <label>Confirmă parola nouă</label>
+                        <input type="password" id="confirmNewPass">
+                    </p>
+                    <p>
+                        <button class="btn btn-primary" id="changePassBtn">Schimbă</button>
+                    <div id="changePassMsg"></div>
+                    </p>
+                </div>
+
+                <div>
+                    <button onclick="openFRDS()">Cauta in FRDS APP</button>
+                </div>
+
+            </div>
+
+
+
+
+            <div class="section-box">
+                <h3>Rubrica – Ore private: cerere & disponibilitate</h3>
+                <p>Completeaza disponibilitatea ta pe zile si cererea de ore private pe saptamana.</p>
+
+                <div id="prMsg" class="status-text"></div>
+
+                <!-- ===== Disponibilitate ===== -->
+                <div class="card">
+                    <h4>1) Disponibilitatea mea</h4>
+
+                    <label>Ziua</label>
+                    <select id="availDay">
+                        <option value="1">Luni</option>
+                        <option value="2">Marti</option>
+                        <option value="3">Miercuri</option>
+                        <option value="4">Joi</option>
+                        <option value="5">Vineri</option>
+                        <option value="6">Sambata</option>
+                        <option value="7">Duminica</option>
+                    </select>
+
+                    <label>Start</label>
+                    <input id="availStart" type="time" step="60">
+
+                    <label>End</label>
+                    <input id="availEnd" type="time" step="60">
+
+                    <button class="btn btn-primary" id="addAvailBtn">Adauga interval</button>
+
+                    <table id="availTable"></table>
+                </div>
+
+                <!-- ===== Cerere ore private ===== -->
+                <div class="card" style="margin-top: 12px;">
+                    <h4>2) Cerere ore private pe saptamana</h4>
+
+                    <label>Total ore dorite / saptamana</label>
+                    <input id="totalHours" type="number" min="1" step="1" value="1">
+
+                    <h4 style="margin-top: 10px;">Preferinte antrenor (ore)</h4>
+
+                    <label>Antrenor</label>
+                    <select id="prefCoach"></select>
+
+                    <label>Ore cu acest antrenor</label>
+                    <input id="prefHours" type="number" min="1" step="1" value="1">
+
+                    <button class="btn btn-secondary" id="addPrefBtn">Adauga preferinta</button>
+
+                    <table id="prefTable"></table>
+
+                    <button class="btn btn-primary" id="saveRequestBtn" style="margin-top: 10px;">Salveaza
+                        cererea</button>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <!-- ================= LISTA DANSATORI (PUBLICA) ================= -->
+        <div class="section-box">
+
+            <h3>Lista dansatori</h3>
+            <button class="btn btn-primary" id="toggleViewDancersBtn">
+                Încarcă lista dansatorilor
+            </button>
+
+            <table id="dancers-table" class="hidden"></table>
+
+        </div>
+
+        <!-- ================= LISTA GRUPE (PUBLICA) ================= -->
+        <div class="section-box">
+            <h3>Lista grupe (read-only)</h3>
+
+            <button class="btn btn-primary" id="toggleViewGroupsBtn">
+                Încarcă grupele
+            </button>
+
+
+            <table id="groups-table" class="hidden"></table>
+
+        </div>
+
+    </main>
+
+    <script src="js/dancer.js"></script>
+</body>
+
+</html>

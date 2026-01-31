@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Group</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<header>
+    <h1>Add Group</h1>
+    <div><a class="header-link" href="/admin.html">Admin</a> | <a class="header-link" href="/index.html">Home</a></div>
+</header>
+<div class="container">
+    <h2>Adaugă o nouă grupă</h2>
+    <form id="add-group-form">
+        <label>Nume grupă</label>
+        <input type="text" id="group-name" placeholder="ex: Beginners" />
+        <label>Descriere</label>
+        <input type="text" id="group-description" placeholder="ex: copii începători" />
+        <button type="submit">Salvează grupa</button>
+    </form>
+    <div id="msg" class="msg"></div>
+</div>
+<script src="js/add-group.js"></script>
+</body>
+</html>

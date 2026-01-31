@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Group</title>
+    <style>
+        body { background: #eef2f3; margin: 0; font-family: Arial, sans-serif; }
+        header { background: #0077cc; padding: 15px 25px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 22px; }
+        a.header-link { color: white; text-decoration: none; font-weight: bold; }
+        .container { padding: 40px; max-width: 900px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #ddd; }
+        button { padding: 6px 10px; background: #ff5050; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #ff3333; }
+        #msg { margin-top: 15px; min-height: 1.2em; }
+        /* Stil pentru fundalul modalului (overlay) */
+        .modal {
+            display: none; position: fixed; z-index: 1000; left: 0; top: 0;
+            width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);
+        }
+        /* Stil pentru cutia modalului */
+        .modal-content {
+            background-color: white; margin: 10% auto; padding: 25px;
+            border-radius: 8px; width: 400px; box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+        .modal-content h3 { margin-top: 0; color: #333; }
+        .option-btn { width: 100%; margin: 10px 0; padding: 10px; border-radius: 5px; font-weight: bold; }
+        .btn-danger { background: #ff5050; color: white; }
+        .btn-safe { background: #28a745; color: white; }
+        .btn-cancel { background: #ccc; color: black; }
+        select { width: 100%; padding: 8px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Delete Group</h1>
+    <div>
+        <a class="header-link" href="/admin.html">Admin</a> |
+        <a class="header-link" href="/index.html">Home</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Șterge grupă</h2>
+    <p>Alege o grupă din listă și apasă „Delete”.</p>
+
+    <button onclick="loadGroups()">Reîncarcă lista</button>
+
+    <div id="msg"></div>
+
+    <table id="group-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Descriere</th>
+            <th>Acțiune</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- rânduri din JS -->
+        </tbody>
+    </table>
+</div>
+<div id="deleteOptionsModal" class="modal">
+    <div class="modal-content">
+        <h3>Atenție!</h3>
+        <p>Grupa are dansatori/programări. Ce doriți să faceți?</p>
+
+        <button class="option-btn btn-danger" onclick="executeAdvancedDelete(true, null)">
+            Șterge grupa ȘI toți dansatorii ei
+        </button>
+
+        <hr>
+        <p>Sau mută dansatorii în altă grupă:</p>
+        <select id="reassignSelect"></select>
+        <button class="option-btn btn-safe" onclick="executeAdvancedDelete(false)">
+            Mută dansatorii și șterge grupa
+        </button>
+
+        <button class="option-btn btn-cancel" onclick="closeModal()">Anulează</button>
+    </div>
+</div>
+<script>
+    async function loadGroups() {
+        const msgEl = document.getElementById('msg');
+        const tbody = document.querySelector('#group-table tbody');
+        msgEl.textContent = 'Se încarcă...';
+        tbody.innerHTML = '';
+
+        try {
+            const resp = await fetch('/api/groups');
+            if (!resp.ok) {
+                msgEl.textContent = 'Eroare la încărcare (status ' + resp.status + ').';
+                return;
+            }
+
+            const data = await resp.json();
+            msgEl.textContent = '';
+
+            data.forEach(g => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td>${g.id}</td>
+                <td>${g.name}</td>
+                <td>${g.description || ''}</td>
+                <td><button onclick="deleteGroup(${g.id})">Delete</button></td>
+            `;
+                tbody.appendChild(tr);
+            });
+
+            if (data.length === 0) {
+                msgEl.textContent = 'Nu există grupe în baza de date.';
+            }
+
+        } catch (err) {
+            console.error(err);
+            msgEl.textContent = 'Eroare de rețea.';
+        }
+    }
+
+    async function deleteGroup(id) {
+        const msgEl = document.getElementById('msg');
+        if (!confirm('Sigur vrei să ștergi grupa cu id=' + id + '?')) return;
+
+        try {
+            const resp = await fetch('/api/groups/' + id, { method: 'DELETE' });
+            if (resp.status === 204) {
+                msgEl.textContent = 'Grupă ștearsă.';
+                loadGroups();
+            } else if (resp.status === 404) {
+                msgEl.textContent = 'Grupa nu a fost găsită.';
+            } else {
+                msgEl.textContent = 'Eroare la ștergere (status ' + resp.status + ').';
+            }
+        } catch (err) {
+            console.error(err);
+            msgEl.textContent = 'Eroare de rețea.';
+        }
+
+    }
+    let currentGroupIdToDelete = null;
+
+    // Aceasta înlocuiește funcția ta veche
+    async function deleteGroup(id) {
+        currentGroupIdToDelete = id;
+        const modal = document.getElementById('deleteOptionsModal');
+
+        // Încărcăm grupele disponibile pentru reatribuire
+        const resp = await fetch('/api/groups');
+        const groups = await resp.json();
+        const select = document.getElementById('reassignSelect');
+
+        select.innerHTML = '';
+        // Filtrăm grupa curentă din listă (nu poți muta dansatorii în aceeași grupă)
+        groups.filter(g => g.id !== id).forEach(g => {
+            let opt = document.createElement('option');
+            opt.value = g.id;
+            opt.textContent = g.name;
+            select.appendChild(opt);
+        });
+
+        modal.style.display = 'block';
+    }
+
+    async function executeAdvancedDelete(deleteDancers) {
+        const msgEl = document.getElementById('msg');
+        const reassignId = document.getElementById('reassignSelect').value;
+
+        // Construim URL-ul cu parametrii pe care îi așteaptă Backend-ul tău
+        let url = `/api/groups/${currentGroupIdToDelete}?deleteDancers=${deleteDancers}`;
+        if (!deleteDancers && reassignId) {
+            url += `&reassignToId=${reassignId}`;
+        }
+
+        try {
+            const resp = await fetch(url, { method: 'DELETE' });
+            if (resp.ok) {
+                msgEl.textContent = 'Acțiune finalizată cu succes.';
+                closeModal();
+                loadGroups();
+            } else {
+                const errorText = await resp.text();
+                msgEl.textContent = 'Eroare: ' + errorText;
+            }
+        } catch (err) {
+            msgEl.textContent = 'Eroare de rețea.';
+        }
+    }
+
+    function closeModal() {
+        document.getElementById('deleteOptionsModal').style.display = 'none';
+    }
+
+    loadGroups();
+</script>
+</body>
+</html>

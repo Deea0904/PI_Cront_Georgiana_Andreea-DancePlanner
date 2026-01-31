@@ -1,0 +1,90 @@
+### toate
+GET http://localhost:8081/api/coaches
+
+### creeaza coach
+POST http://localhost:8081/api/coaches
+Content-Type: application/json
+
+{
+  "name": "Alex"
+}
+
+### update
+PUT http://localhost:8081/api/coaches/1
+Content-Type: application/json
+
+{
+  "name": "Maria D. (update)"
+}
+
+### delete
+DELETE http://localhost:8081/api/coaches/1
+
+
+
+### toate salile
+GET http://localhost:8081/api/halls
+
+### creeaza sala
+POST http://localhost:8081/api/halls
+Content-Type: application/json
+
+{
+  "name": "Sala Medie",
+  "capacity": 30
+}
+
+### update sala (schimba 1 cu id-ul corect)
+PUT http://localhost:8081/api/halls/1
+Content-Type: application/json
+
+{
+  "name": "Sala Mare - modificata",
+  "capacity": 40
+}
+
+### sterge sala
+DELETE http://localhost:8081/api/halls/1
+
+
+
+### 1. Listează toate lecțiile private
+GET http://localhost:8081/api/private-lessons
+
+
+### 2. Creează o lecție nouă
+# Atenție: pune aici id-uri care EXISTĂ deja în tabelele:
+#  - dancer
+#  - coach
+#  - dance_hall
+POST http://localhost:8081/api/private-lessons
+Content-Type: application/json
+
+{
+  "dancerId": 1,
+  "coachId": 1,
+  "danceHallId": 1,
+  "startTime": "2025-12-10T18:00:00",
+  "endTime":   "2025-12-10T19:00:00"
+}
+
+
+### 3. Ia o lecție după id (ex: 1)
+GET http://localhost:8081/api/private-lessons/1
+
+
+### 4. Update la o lecție (dacă ai făcut endpoint de PUT)
+PUT http://localhost:8081/api/private-lessons/1
+Content-Type: application/json
+
+{
+  "dancerId": 1,
+  "coachId": 1,
+  "danceHallId": 1,
+  "startTime": "2025-12-10T19:00:00",
+  "endTime":   "2025-12-10T20:00:00"
+}
+
+
+### 5. Șterge o lecție (ex: id = 1)
+DELETE http://localhost:8081/api/private-lessons/1

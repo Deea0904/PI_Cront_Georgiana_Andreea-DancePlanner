@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ro">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Login</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>Login Admin</h1>
+        <a href="index.html" class="logout-btn">Home</a>
+    </header>
+
+    <div class="container">
+        <div class="box">
+            <form method="post" action="/admin/login">
+                <label>Username</label>
+                <input name="username" type="text" required>
+
+                <p><label>Parola</label>
+                    <input name="password" type="password" required>
+                </p>
+                <button type="submit">Login</button>
+
+                <div class="err" style="margin-top:10px;">
+                    <script>
+                        // afiseaza mesaj daca exista parametrul ?error
+                        if (new URLSearchParams(window.location.search).has("error")) {
+                            document.write("Username/parola gresite.");
+                        }
+                    </script>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+
+</html>

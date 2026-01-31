@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Dancer</title>
+    <style>
+        body { background: #eef2f3; margin: 0; font-family: Arial, sans-serif; }
+        header { background: #0077cc; padding: 15px 25px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        header h1 { margin: 0; font-size: 22px; }
+        a.header-link { color: white; text-decoration: none; font-weight: bold; }
+        .container { padding: 40px; max-width: 900px; margin: auto; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
+        th { background: #ddd; }
+        button { padding: 6px 10px; background: #ff5050; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        button:hover { background: #ff3333; }
+        #msg { margin-top: 15px; min-height: 1.2em; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Delete Dancer</h1>
+    <div>
+        <a class="header-link" href="/admin.html">Admin</a> |
+        <a class="header-link" href="/index.html">Home</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Șterge dancer</h2>
+    <p>Alege un dancer din listă și apasă „Delete”.</p>
+
+    <button onclick="loadDancers()">Reîncarcă lista</button>
+
+    <div id="msg"></div>
+
+    <table id="dancer-table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nume</th>
+            <th>Level</th>
+            <th>Acțiune</th>
+        </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+<script>
+    async function loadDancers() {
+        const msgEl = document.getElementById('msg');
+        const tbody = document.querySelector('#dancer-table tbody');
+        msgEl.textContent = 'Se încarcă...';
+        tbody.innerHTML = '';
+
+        try {
+            const resp = await fetch('/api/dancers');
+            if (!resp.ok) {
+                msgEl.textContent = 'Eroare la încărcare (status ' + resp.status + ').';
+                return;
+            }
+
+            const data = await resp.json();
+            msgEl.textContent = '';
+
+            data.forEach(d => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                <td>${d.id}</td>
+                <td>${d.name}</td>
+                <td>${d.levelName || ''}</td>
+                <td><button onclick="deleteDancer(${d.id})">Delete</button></td>
+            `;
+                tbody.appendChild(tr);
+            });
+
+            if (data.length === 0) {
+                msgEl.textContent = 'Nu există dansatori în baza de date.';
+            }
+
+        } catch (err) {
+            console.error(err);
+            msgEl.textContent = 'Eroare de rețea.';
+        }
+    }
+
+    async function deleteDancer(id) {
+        const msgEl = document.getElementById('msg');
+        if (!confirm('Sigur vrei să ștergi dancerul cu id=' + id + '?')) return;
+
+        try {
+            const resp = await fetch('/api/dancers/' + id, { method: 'DELETE' });
+            if (resp.status === 204) {
+                msgEl.textContent = 'Dancer șters.';
+                loadDancers();
+            } else if (resp.status === 404) {
+                msgEl.textContent = 'Dancerul nu a fost găsit.';
+            } else {
+                msgEl.textContent = 'Eroare la ștergere (status ' + resp.status + ').';
+            }
+        } catch (err) {
+            console.error(err);
+            msgEl.textContent = 'Eroare de rețea.';
+        }
+    }
+
+    loadDancers();
+</script>
+</body>
+</html>

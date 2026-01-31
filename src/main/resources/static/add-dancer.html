@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Dancer</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<header>
+    <h1>Add Dancer</h1>
+    <div>
+        <a class="header-link" href="/admin.html">Admin</a> |
+        <a class="header-link" href="/index.html">Home</a>
+    </div>
+</header>
+
+<div class="container">
+    <h2>Adaugă un nou dansator</h2>
+    <form id="add-dancer-form">
+        <label for="dancer-name">Nume dancer</label>
+        <input type="text" id="dancer-name" placeholder="ex: Ana Pop" required />
+
+        <label for="dancer-age">Vârstă</label>
+        <input type="number" id="dancer-age" min="1" max="100" required />
+
+        <label for="group-select">Selectează grupa (level)</label>
+        <select id="group-select" required>
+            <option value="">-- încărcare grupe... --</option>
+        </select>
+
+        <button type="submit">Salvează dancer</button>
+    </form>
+    <div id="msg" class="msg"></div>
+</div>
+
+<script src="js/add-dancer.js"></script>
+</body>
+</html>

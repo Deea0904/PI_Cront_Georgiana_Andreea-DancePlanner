@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="ro">
+<head>
+    <meta charset="utf-8">
+    <title>Dancer Login</title>
+
+    <!-- CSS separat -->
+    <link rel="stylesheet" href="css/dancer-login.css">
+</head>
+<body>
+
+<h2>Dancer Page</h2>
+
+<button id="toggleLoginBtn">Conectare</button>
+
+<div id="loginBox" class="card hidden">
+    <h3>Login dancer</h3>
+
+    <label>Username</label>
+    <input type="text" id="username">
+
+    <label>Parola</label>
+    <input type="password" id="password">
+
+    <button id="loginBtn">Login</button>
+    <div id="loginMsg"></div>
+</div>
+
+<div id="dancerContent" class="hidden">
+    <h3>Zona dancer</h3>
+    <button id="viewDancersBtn">Vezi dansatorii</button>
+    <div id="dancersResult"></div>
+</div>
+
+<!-- JS separat -->
+<script src="js/dancer-login.js"></script>
+</body>
+</html>

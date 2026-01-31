@@ -1,0 +1,212 @@
+body {
+    background: #eef2f3;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+
+header {
+    background: #0077cc;
+    padding: 15px 25px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 22px;
+}
+
+.container {
+    padding: 40px;
+    max-width: 900px;
+    margin: auto;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 15px;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="password"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border-radius: 6px;
+    border: 1px solid #aaa;
+    font-size: 15px;
+    box-sizing: border-box;
+    background-color: white;
+}
+
+button {
+    margin-top: 20px;
+    padding: 10px 16px;
+    background: #0077cc;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    transition: background 0.3s;
+}
+
+button:hover {
+    background: #005fa3;
+}
+
+.logout-btn,
+.header-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 8px 12px;
+    border-radius: 4px;
+}
+
+.logout-btn {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.logout-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.box {
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.box form {
+    text-align: left;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+th,
+td {
+    border: 1px solid #eee;
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background: #f4f4f4;
+    color: #555;
+}
+
+.msg {
+    margin-top: 15px;
+    min-height: 1.2em;
+    font-weight: bold;
+}
+
+.msg.ok {
+    color: green;
+}
+
+.msg.err,
+.err {
+    color: red;
+}
+
+.ai-container {
+    padding: 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.ai-table th {
+    background: #6200ea;
+    color: white;
+}
+
+.status-loading {
+    color: #6200ea;
+    font-weight: bold;
+    animation: blink 1.5s infinite;
+    margin-top: 10px;
+}
+
+@keyframes blink {
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.btn-approve {
+    background-color: #03dac6;
+    color: black;
+    margin-top: 0;
+}
+
+.btn-approve:hover {
+    background-color: #02b3a3;
+}
+
+.controls-box {
+    margin-bottom: 20px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+footer {
+    margin-top: 40px;
+    text-align: center;
+    padding-bottom: 40px;
+}
+
+footer a {
+    color: #0077cc;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+#timetable-container {
+    width: 100%;
+    min-height: 100px;
+    margin-top: 20px;
+    display: block !important;
+    clear: both;
+}
+
+.day-card {
+    margin: 10px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    min-width: 250px;
+}

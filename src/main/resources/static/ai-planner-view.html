@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <title>AI Schedule Generator</title>
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body>
+<header>
+    <h1>Planificator Inteligent</h1>
+    <a href="admin.html" class="logout-btn">Inapoi</a>
+</header>
+
+<div class="ai-container">
+    <div class="controls-box" style="justify-content: center; gap: 20px;">
+        <button id="generateWeeklyBtn" style="background-color: #ff9800; padding: 15px 30px; font-size: 1.1em;">
+            Genereaza Orar Complet Saptamanal
+        </button>
+        <button id="approveAllBtn" style="display:none; background-color: #28a745; padding: 15px 30px; font-size: 1.1em;">
+            Aproba si Salveaza in Calendar
+        </button>
+    </div>
+
+    <div id="loadingMsg" class="status-loading" style="display:none;">AI analizeaza datele...</div>
+    <div id="generationSummary"></div>
+
+    <table id="resultsTable" style="display:none;">
+        <thead>
+        <tr><th>Zi</th><th>Interval Orar</th><th>Sala</th><th>Instructor</th><th>Dansator</th><th>Actiune</th></tr>
+        </thead>
+        <tbody id="resultsBody"></tbody>
+    </table>
+</div>
+<script src="js/ai-planner.js"></script>
+</body>
+</html>
